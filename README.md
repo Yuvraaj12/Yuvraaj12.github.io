@@ -3,20 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hi in Blue</title>
-    <style>
-        body {
-            background-color: #f0f0f0; /* Set background color */
-            font-family: Arial, sans-serif; /* Set font family */
-            text-align: center; /* Center text horizontally */
-            margin-top: 100px; /* Add top margin for spacing */
-        }
-        .blue-text {
-            color: blue; /* Set text color to blue */
-        }
-    </style>
+    <title>Media Player</title>
 </head>
 <body>
-    <h1 class="blue-text">Hi</h1>
+    <h1>Media Player</h1>
+    
+    <!-- Audio Player -->
+    <audio controls id="audioPlayer">
+        <source src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Playlist -->
+    <ul id="playlist">
+        <li><a href="#" onclick="playAudio('audio_file_1.mp3')">Audio File 1</a></li>
+        <li><a href="#" onclick="playAudio('audio_file_2.mp3')">Audio File 2</a></li>
+        <!-- Add more audio files here -->
+    </ul>
+
+    <script>
+        function playAudio(audioSrc) {
+            var audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.src = audioSrc;
+            audioPlayer.play();
+        }
+    </script>
 </body>
 </html>

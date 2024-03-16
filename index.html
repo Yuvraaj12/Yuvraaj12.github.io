@@ -28,34 +28,34 @@
         /* Style for the drop zone */
         #drop-zone {
             width: 100%;
-            height: 100px;
+            height: 200px;
             border: 2px dashed black; /* Change border color to black */
             border-radius: 5px;
             text-align: center;
             padding: 20px;
             box-sizing: border-box;
             color: black; /* Change text color to black */
+            margin-bottom: 20px; /* Add some space between the drop zone and video player */
         }
 
         video {
             width: 100%; /* Make the video player responsive */
-            display: none; /* Hide the video element by default */
         }
 
         #title {
             text-align: center;
             font-size: 24px;
-            margin-bottom: 20px; /* Add some space between the title and video player */
+            margin-bottom: 20px; /* Add some space between the title and drop zone */
             color: black; /* Change title text color to black */
         }
     </style>
 </head>
 <body>
-    <h1 id="title">Video Player By Yuvraaj </h1>
+    <h1 id="title">Video Player</h1>
+    <video controls id="video-player"></video>
     <div id="drop-zone">
         <p>Drag and drop your MP3 or MP4 files here</p>
     </div>
-    <video controls id="video-player"></video>
 
     <script>
         const dropZone = document.getElementById('drop-zone');
@@ -86,7 +86,6 @@
             } else if (file.type.startsWith('video/mp4')) {
                 // Handle MP4 file
                 videoPlayer.src = URL.createObjectURL(file);
-                videoPlayer.style.display = 'block'; // Show the video player
             } else {
                 alert('Unsupported file format. Please drop an MP3 or MP4 file.');
             }

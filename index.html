@@ -1,26 +1,95 @@
-// Listen for form submission to send a file
-document.getElementById('file-form').addEventListener('submit', event => {
-    event.preventDefault();
-    
-    const fileInput = document.getElementById('file-input');
-    const file = fileInput.files[0];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website with Light Blue Background</title>
+    <style>
+        body {
+            background-color: #add8e6; /* Light blue color code */
+            /* You can adjust the shade of light blue by specifying a different value */
+        }
+    </style>
+</head>
+<body>
+    <!-- Your content here -->
+</body>
+</html>
 
-    if (!file) return;
 
-    // Display the filename in the peer list
-    const listItem = document.createElement('li');
-    listItem.textContent = `Sending file "${file.name}"`;
-    peerList.appendChild(listItem);
 
-    // Read file data as a binary blob
-    const reader = new FileReader();
-    reader.onload = event => {
-        // Log the file data before sending
-        console.log("File Data:", event.target.result);
-        
-        // Send file to all connected peers
-        const fileData = event.target.result;
-        sendChannel.send(fileData);
-    };
-    reader.readAsArrayBuffer(file);
-});
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player with Drag and Drop</title>
+    <style>
+        /* Style for the drop zone */
+        #drop-zone {
+            width: 100%;
+            height: 100px;
+            border: 2px dashed black; /* Change border color to black */
+            border-radius: 5px;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            color: black; /* Change text color to black */
+            margin-bottom: 20px; /* Add some space between the drop zone and video player */
+        }
+
+        video {
+            width: 100%; /* Make the video player responsive */
+        }
+
+        #title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px; /* Add some space between the title and drop zone */
+            color: black; /* Change title text color to black */
+        }
+    </style>
+</head>
+<body>
+    <h1 id="title">Video Player By Yuvraaj</h1>
+    <video controls id="video-player"></video>
+    <div id="drop-zone">
+        <p>Drag and drop your MP3 or MP4 files here</p>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const videoPlayer = document.getElementById('video-player');
+
+        // Prevent default behavior when dragging files over the drop zone
+        dropZone.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dropZone.style.backgroundColor = '#f0f0f0';
+        });
+
+        // Reset background color when dragging leaves the drop zone
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.style.backgroundColor = '';
+        });
+
+        // Handle dropped files
+        dropZone.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dropZone.style.backgroundColor = '';
+
+            const file = event.dataTransfer.files[0];
+
+            // Check if the dropped file is an MP3 or MP4 file
+            if (file.type.startsWith('audio/mp3')) {
+                // Handle MP3 file
+                alert('MP3 file dropped: ' + file.name);
+            } else if (file.type.startsWith('video/mp4')) {
+                // Handle MP4 file
+                videoPlayer.src = URL.createObjectURL(file);
+            } else {
+                alert('Unsupported file format. Please drop an MP3 or MP4 file.');
+            }
+        });
+    </script>
+</body>
+</html>

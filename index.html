@@ -16,6 +16,7 @@
 </body>
 </html>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,9 +39,16 @@
             width: 100%; /* Make the video player responsive */
             display: none; /* Hide the video element by default */
         }
+
+        #title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px; /* Add some space between the title and video player */
+        }
     </style>
 </head>
 <body>
+    <h1 id="title">Video Player</h1>
     <div id="drop-zone">
         <p>Drag and drop your MP3 or MP4 files here</p>
     </div>
@@ -74,4 +82,12 @@
                 alert('MP3 file dropped: ' + file.name);
             } else if (file.type.startsWith('video/mp4')) {
                 // Handle MP4 file
-                videoPlayer.src = U
+                videoPlayer.src = URL.createObjectURL(file);
+                videoPlayer.style.display = 'block'; // Show the video player
+            } else {
+                alert('Unsupported file format. Please drop an MP3 or MP4 file.');
+            }
+        });
+    </script>
+</body>
+</html>

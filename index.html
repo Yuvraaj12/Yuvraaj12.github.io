@@ -3,29 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Media Player</title>
+    <title>Custom Video Player</title>
+    <style>
+        body {
+            background-color: #f0f0f0; /* Set background color */
+            font-family: Arial, sans-serif; /* Set font family */
+            text-align: center; /* Center text horizontally */
+            margin-top: 50px; /* Add top margin for spacing */
+        }
+        .blue-text {
+            color: blue; /* Set text color to blue */
+        }
+        video {
+            max-width: 100%; /* Ensure the video fits within the viewport */
+        }
+    </style>
 </head>
 <body>
-    <h1>Media Player</h1>
+    <h1 class="blue-text">Hi</h1>
     
-    <!-- Audio Player -->
-    <audio controls id="audioPlayer">
-        <source src="" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+    <!-- Video Player -->
+    <video controls>
+        <source id="videoSource" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
 
-    <!-- Playlist -->
-    <ul id="playlist">
-        <li><a href="#" onclick="playAudio('audio_file_1.mp3')">Audio File 1</a></li>
-        <li><a href="#" onclick="playAudio('audio_file_2.mp3')">Audio File 2</a></li>
-        <!-- Add more audio files here -->
-    </ul>
+    <!-- Form to input video file path -->
+    <form id="videoForm" onsubmit="return loadVideo()">
+        <label for="videoFile">Video File:</label><br>
+        <input type="text" id="videoFile" name="videoFile" placeholder="Enter video file path"><br>
+        <button type="submit">Load Video</button>
+    </form>
 
     <script>
-        function playAudio(audioSrc) {
-            var audioPlayer = document.getElementById('audioPlayer');
-            audioPlayer.src = audioSrc;
-            audioPlayer.play();
+        function loadVideo() {
+            var videoFile = document.getElementById("videoFile").value;
+            var videoSource = document.getElementById("videoSource");
+            videoSource.src = videoFile;
+            return false; // Prevent form submission
         }
     </script>
 </body>

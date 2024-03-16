@@ -14,6 +14,14 @@
         video {
             max-width: 100%; /* Ensure the video fits within the viewport */
         }
+        .drop-zone {
+            border: 2px dashed #aaa;
+            padding: 20px;
+            cursor: pointer;
+        }
+        .drop-zone:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
 <body>
@@ -23,20 +31,39 @@
         Your browser does not support the video tag.
     </video>
 
-    <!-- Form to input video file path -->
-    <form id="videoForm" onsubmit="return loadVideo()">
-        <label for="videoFile">Video File:</label><br>
-        <input type="text" id="videoFile" name="videoFile" placeholder="Enter video file path"><br>
-        <button type="submit">Load Video</button>
-    </form>
+    <!-- Drop zone for drag and drop -->
+    <div class="drop-zone" id="dropZone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
+        <p>Drag and drop video files here, or click to select files</p>
+        <input type="file" id="fileInput" style="display: none;" accept="video/*" onchange="handleFiles(this.files)">
+    </div>
 
     <script>
-        function loadVideo() {
-            var videoFile = document.getElementById("videoFile").value;
+        function loadVideo(videoFile) {
             var videoSource = document.getElementById("videoSource");
             videoSource.src = videoFile;
-            return false; // Prevent form submission
         }
+
+        function handleFiles(files) {
+            var file = files[0];
+            var videoSource = document.getElementById("videoSource");
+            var videoObjectURL = URL.createObjectURL(file);
+            loadVideo(videoObjectURL);
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            var files = event.dataTransfer.files;
+            handleFiles(files);
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+        }
+
+        // Clicking on the drop zone triggers file input
+        document.getElementById("dropZone").addEventListener("click", function() {
+            document.getElementById("fileInput").click();
+        });
     </script>
 </body>
 </html>

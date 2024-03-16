@@ -38,6 +38,9 @@ ws.onmessage = event => {
     } else if (message.type === 'candidate') {
         // Handle ICE candidate message from peer
         handleCandidate(message);
+    } else if (message.type === 'file') {
+        // Handle file data message from peer
+        receiveFile(message.fileData);
     }
 };
 
@@ -55,6 +58,12 @@ function handleOffer(message) {
     sendChannel = peerConnection.createDataChannel('fileChannel');
     sendChannel.onopen = () => console.log('Send channel opened');
     sendChannel.onclose = () => console.log('Send channel closed');
+
+    // Set up event listeners for data channel
+    sendChannel.onmessage = event => {
+        // Handle receiving file data from peer
+        receiveFile(event.data);
+    };
 
     peerConnection.onicecandidate = event => {
         if (event.candidate) {
@@ -82,6 +91,20 @@ function handleAnswer(message) {
 // Function to handle ICE candidate message from peer
 function handleCandidate(message) {
     peerConnection.addIceCandidate(new RTCIceCandidate(message.candidate));
+}
+
+// Function to handle receiving file data
+function receiveFile(fileData) {
+    // Create a Blob from the received data
+    const blob = new Blob([fileData]);
+
+    // Create a URL for the Blob
+    const fileURL = URL.createObjectURL(blob);
+
+    // Display the received file URL
+    const listItem = document.createElement('li');
+    listItem.innerHTML = `Received file: <a href="${fileURL}" download>Download</a>`;
+    peerList.appendChild(listItem);
 }
 
 // Listen for form submission to send a file

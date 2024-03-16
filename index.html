@@ -1,112 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>File Transfer</title>
-</head>
-<body>
-
-<h1>Send File</h1>
-<form id="file-form">
-    <label for="file-input">Select file to send:</label>
-    <input type="file" id="file-input" accept="*" required>
-    <button type="submit">Send File</button>
-</form>
-
-<h1>Receive File</h1>
-<ul id="peer-list"></ul>
-
-<script>
-const peerList = document.getElementById('peer-list');
-let sendChannel, receiveChannel;
-
-// Generate a random username for this device
-const username = Math.random().toString(36).substring(7);
-
-// WebSocket connection for signaling
-const ws = new WebSocket('ws://localhost:8080');
-
-ws.onmessage = event => {
-    const message = JSON.parse(event.data);
-    if (message.type === 'offer') {
-        // Handle offer message from peer
-        handleOffer(message);
-    } else if (message.type === 'answer') {
-        // Handle answer message from peer
-        handleAnswer(message);
-    } else if (message.type === 'candidate') {
-        // Handle ICE candidate message from peer
-        handleCandidate(message);
-    } else if (message.type === 'file') {
-        // Handle file data message from peer
-        receiveFile(message.fileData);
-    }
-};
-
-// Function to send signaling messages
-function sendMessage(message) {
-    ws.send(JSON.stringify(message));
-}
-
-// Function to handle offer message from peer
-function handleOffer(message) {
-    // Create peer connection
-    const peerConnection = new RTCPeerConnection();
-    
-    // Set up data channel
-    sendChannel = peerConnection.createDataChannel('fileChannel');
-    sendChannel.onopen = () => console.log('Send channel opened');
-    sendChannel.onclose = () => console.log('Send channel closed');
-
-    // Set up event listeners for data channel
-    sendChannel.onmessage = event => {
-        // Handle receiving file data from peer
-        receiveFile(event.data);
-    };
-
-    peerConnection.onicecandidate = event => {
-        if (event.candidate) {
-            sendMessage({
-                type: 'candidate',
-                candidate: event.candidate
-            });
-        }
-    };
-
-    peerConnection.setRemoteDescription(new RTCSessionDescription(message));
-    peerConnection.createAnswer()
-        .then(answer => {
-            peerConnection.setLocalDescription(answer);
-            sendMessage(answer);
-        })
-        .catch(error => console.error('Error creating answer:', error));
-}
-
-// Function to handle answer message from peer
-function handleAnswer(message) {
-    peerConnection.setRemoteDescription(new RTCSessionDescription(message));
-}
-
-// Function to handle ICE candidate message from peer
-function handleCandidate(message) {
-    peerConnection.addIceCandidate(new RTCIceCandidate(message.candidate));
-}
-
-// Function to handle receiving file data
-function receiveFile(fileData) {
-    // Create a Blob from the received data
-    const blob = new Blob([fileData]);
-
-    // Create a URL for the Blob
-    const fileURL = URL.createObjectURL(blob);
-
-    // Display the received file URL
-    const listItem = document.createElement('li');
-    listItem.innerHTML = `Received file: <a href="${fileURL}" download>Download</a>`;
-    peerList.appendChild(listItem);
-}
-
 // Listen for form submission to send a file
 document.getElementById('file-form').addEventListener('submit', event => {
     event.preventDefault();
@@ -124,13 +15,12 @@ document.getElementById('file-form').addEventListener('submit', event => {
     // Read file data as a binary blob
     const reader = new FileReader();
     reader.onload = event => {
+        // Log the file data before sending
+        console.log("File Data:", event.target.result);
+        
         // Send file to all connected peers
         const fileData = event.target.result;
         sendChannel.send(fileData);
     };
     reader.readAsArrayBuffer(file);
 });
-</script>
-
-</body>
-</html>

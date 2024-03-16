@@ -26,8 +26,7 @@
 </head>
 <body>
     <!-- Video Player -->
-    <video controls>
-        <source id="videoSource" type="video/mp4">
+    <video controls id="videoPlayer">
         Your browser does not support the video tag.
     </video>
 
@@ -39,13 +38,14 @@
 
     <script>
         function loadVideo(videoFile) {
-            var videoSource = document.getElementById("videoSource");
-            videoSource.src = videoFile;
+            var videoPlayer = document.getElementById("videoPlayer");
+            videoPlayer.src = videoFile;
+            videoPlayer.play(); // Autoplay the video
         }
 
         function handleFiles(files) {
             var file = files[0];
-            var videoSource = document.getElementById("videoSource");
+            var videoPlayer = document.getElementById("videoPlayer");
             var videoObjectURL = URL.createObjectURL(file);
             loadVideo(videoObjectURL);
         }

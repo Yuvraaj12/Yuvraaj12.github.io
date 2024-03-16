@@ -93,4 +93,21 @@ document.getElementById('file-form').addEventListener('submit', event => {
 
     if (!file) return;
 
-    // D
+    // Display the filename in the peer list
+    const listItem = document.createElement('li');
+    listItem.textContent = `Sending file "${file.name}"`;
+    peerList.appendChild(listItem);
+
+    // Read file data as a binary blob
+    const reader = new FileReader();
+    reader.onload = event => {
+        // Send file to all connected peers
+        const fileData = event.target.result;
+        sendChannel.send(fileData);
+    };
+    reader.readAsArrayBuffer(file);
+});
+</script>
+
+</body>
+</html>

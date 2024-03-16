@@ -12,6 +12,7 @@
 
         /* Style for the drop zone */
         #drop-zone {
+            position: relative; /* Required for absolute positioning of file input */
             width: 100%;
             height: 100px;
             border: 2px dashed black; /* Change border color to black */
@@ -21,6 +22,7 @@
             box-sizing: border-box;
             color: black; /* Change text color to black */
             margin-bottom: 20px; /* Add some space between the drop zone and video player */
+            cursor: pointer; /* Show pointer cursor */
         }
 
         video {
@@ -36,17 +38,13 @@
 
         /* Style for file input */
         #file-input {
-            display: none; /* Hide the file input initially */
-        }
-
-        #file-input-label {
-            display: inline-block;
-            cursor: pointer; /* Show pointer cursor when hovering over the label */
-            padding: 10px 20px;
-            background-color: #f0f0f0; /* Light gray background for contrast */
-            border: 2px solid black; /* Black border */
-            border-radius: 5px;
-            color: black; /* Black text color */
+            position: absolute; /* Position file input over the drop zone */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0; /* Make file input invisible */
+            cursor: pointer; /* Show pointer cursor */
         }
     </style>
 </head>
@@ -54,10 +52,9 @@
     <h1 id="title">Video Player By Yuvraaj</h1>
     <video controls id="video-player"></video>
     <div id="drop-zone">
-        <p>Drag and drop your MP3 or MP4 files here</p>
+        <p>Drag and drop your MP3 or MP4 files here or click to select files</p>
+        <input type="file" id="file-input" accept="audio/mp3,video/mp4">
     </div>
-    <label id="file-input-label" for="file-input">Select file to upload</label>
-    <input type="file" id="file-input" accept="audio/mp3,video/mp4">
 
     <script>
         const dropZone = document.getElementById('drop-zone');
@@ -81,6 +78,11 @@
         // Handle file selection from file input
         fileInput.addEventListener('change', handleFileSelect);
 
+        // Handle click on drop zone to trigger file input
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
         function handleFileSelect(event) {
             event.preventDefault();
             dropZone.style.backgroundColor = '';
@@ -102,4 +104,6 @@
                 }
             }
         }
-    </scrip
+    </script>
+</body>
+</html>

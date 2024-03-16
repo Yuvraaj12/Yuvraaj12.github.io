@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website with Logo</title>
+    <style>
+        /* CSS styles can go here */
+    </style>
+</head>
+<body>
+    <img src="file:///C:/Users/37jag/Saved%20Games/DCS/ImagesShop/F-15E_Eshop_cover_700x1000.png" alt="Logo">
+    <!-- Replace "file:///C:/Users/37jag/Saved%20Games/DCS/ImagesShop/F-15E_Eshop_cover_700x1000.png" with the path to your logo image -->
+    <!-- You can also specify width and height attributes if needed -->
+    <!-- Example: <img src="file:///C:/Users/37jag/Saved%20Games/DCS/ImagesShop/F-15E_Eshop_cover_700x1000.png" alt="Logo" width="100" height="100"> -->
+    
+    <!-- Your other content here -->
+</body>
+</html>

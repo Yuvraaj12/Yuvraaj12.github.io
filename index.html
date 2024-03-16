@@ -3,28 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website with Light Blue Background</title>
+    <title>Video Player with File Selection</title>
     <style>
         body {
-            background-color: #add8e6; /* Light blue color code */
+            background-color: #add8e6; /* Light blue background color */
             /* You can adjust the shade of light blue by specifying a different value */
         }
-    </style>
-</head>
-<body>
-    <!-- Your content here -->
-</body>
-</html>
 
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Player with Drag and Drop</title>
-    <style>
         /* Style for the drop zone */
         #drop-zone {
             width: 100%;
@@ -48,6 +33,21 @@
             margin-bottom: 20px; /* Add some space between the title and drop zone */
             color: black; /* Change title text color to black */
         }
+
+        /* Style for file input */
+        #file-input {
+            display: none; /* Hide the file input initially */
+        }
+
+        #file-input-label {
+            display: inline-block;
+            cursor: pointer; /* Show pointer cursor when hovering over the label */
+            padding: 10px 20px;
+            background-color: #f0f0f0; /* Light gray background for contrast */
+            border: 2px solid black; /* Black border */
+            border-radius: 5px;
+            color: black; /* Black text color */
+        }
     </style>
 </head>
 <body>
@@ -56,10 +56,13 @@
     <div id="drop-zone">
         <p>Drag and drop your MP3 or MP4 files here</p>
     </div>
+    <label id="file-input-label" for="file-input">Select file to upload</label>
+    <input type="file" id="file-input" accept="audio/mp3,video/mp4">
 
     <script>
         const dropZone = document.getElementById('drop-zone');
         const videoPlayer = document.getElementById('video-player');
+        const fileInput = document.getElementById('file-input');
 
         // Prevent default behavior when dragging files over the drop zone
         dropZone.addEventListener('dragover', (event) => {
@@ -73,23 +76,30 @@
         });
 
         // Handle dropped files
-        dropZone.addEventListener('drop', (event) => {
+        dropZone.addEventListener('drop', handleFileSelect);
+
+        // Handle file selection from file input
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleFileSelect(event) {
             event.preventDefault();
             dropZone.style.backgroundColor = '';
 
-            const file = event.dataTransfer.files[0];
+            const file = event.type === 'drop' ?
+                event.dataTransfer.files[0] : event.target.files[0];
 
-            // Check if the dropped file is an MP3 or MP4 file
-            if (file.type.startsWith('audio/mp3')) {
-                // Handle MP3 file
-                alert('MP3 file dropped: ' + file.name);
-            } else if (file.type.startsWith('video/mp4')) {
-                // Handle MP4 file
-                videoPlayer.src = URL.createObjectURL(file);
-            } else {
-                alert('Unsupported file format. Please drop an MP3 or MP4 file.');
+            // Check if a file is selected
+            if (file) {
+                // Check if the file is an MP3 or MP4 file
+                if (file.type.startsWith('audio/mp3')) {
+                    // Handle MP3 file
+                    alert('MP3 file selected: ' + file.name);
+                } else if (file.type.startsWith('video/mp4')) {
+                    // Handle MP4 file
+                    videoPlayer.src = URL.createObjectURL(file);
+                } else {
+                    alert('Unsupported file format. Please select an MP3 or MP4 file.');
+                }
             }
-        });
-    </script>
-</body>
-</html>
+        }
+    </scrip

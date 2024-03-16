@@ -3,53 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>File Upload</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
-    }
-    #upload-area {
-        border: 2px dashed #ccc;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-    }
-    #file-input {
-        display: none;
-    }
-    #file-info {
-        margin-top: 10px;
-        font-size: 16px;
-    }
-</style>
+<title>File Transfer</title>
 </head>
 <body>
 
-<div id="upload-area" onclick="document.getElementById('file-input').click()">
-    <p>Click here or drag and drop a file to upload</p>
-    <input type="file" id="file-input" onchange="handleFileUpload(this.files)">
-</div>
+<h1>Send File</h1>
+<form id="file-form">
+    <label for="file-input">Select file to send:</label>
+    <input type="file" id="file-input" accept="*" required>
+    <button type="submit">Send File</button>
+</form>
 
-<div id="file-info"></div>
+<h1>Receive File</h1>
+<ul id="peer-list"></ul>
 
 <script>
-function handleFileUpload(files) {
-    const file = files[0];
-    const fileInfoDisplay = document.getElementById('file-info');
+// Generate a random username for this device
+const username = Math.random().toString(36).substring(7);
 
-    if (file) {
-        const fileURL = URL.createObjectURL(file);
-        fileInfoDisplay.innerHTML = `
-            <p>File selected: ${file.name}</p>
-            <p>Download: <a href="${fileURL}" download="${file.name}">${file.name}</a></p>
-        `;
+// Initialize a new RTCPeerConnection
+const peerConnection = new RTCPeerConnection();
 
-        // You can add code here to send the file to another device
-    } else {
-        fileInfoDisplay.textContent = '';
+// Handle when a new peer is discovered
+peerConnection.onicecandidate = event => {
+    if (event.candidate) {
+        // Send ICE candidate to the other peer
+        // Implement your logic to send the ICE candidate to the other device
     }
-}
+};
+
+// Handle when a file is received from a peer
+peerConnection.ondatachannel = event => {
+    const receiveChannel = event.channel;
+
+    receiveChannel.onmessage = event => {
+        const file = event.data;
+        // Handle the received file
+        // Implement your logic to save or display the received file
+    };
+};
+
+// Listen for form submission to send a file
+document.getElementById('file-form').addEventListener('submit', event => {
+    event.preventDefault();
+    
+    const fileInput = document.getElementById('file-input');
+    const file = fileInput.files[0];
+    const peerList = document.getElementById('peer-list');
+
+    // Create a data channel to send the file
+    const sendChannel = peerConnection.createDataChannel('fileChannel');
+    
+    // Send the file
+    sendChannel.send(file);
+
+    // Display the filename in the peer list
+    const listItem = document.createElement('li');
+    listItem.textContent = `Sending file "${file.name}"`;
+    peerList.appendChild(listItem);
+});
 </script>
 
 </body>

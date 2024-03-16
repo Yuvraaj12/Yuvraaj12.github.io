@@ -1,1 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Media Player</title>
+    <style>
+        body {
+            background-color: #f0f0f0; /* Set background color */
+            font-family: Arial, sans-serif; /* Set font family */
+            text-align: center; /* Center text horizontally */
+            margin-top: 50px; /* Add top margin for spacing */
+        }
+        video, audio {
+            max-width: 100%; /* Ensure the media fits within the viewport */
+        }
+        .drop-zone {
+            border: 2px dashed #aaa;
+            padding: 20px;
+            cursor: pointer;
+        }
+        .drop-zone:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Media Player -->
+    <div>
+        <video controls id="videoPlayer" style="display: none;">
+            Your browser does not support the video tag.
+        </video>
+        <audio controls id="audioPlayer" style="display: none;">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
 
+    <!-- Drop zone for drag and drop -->
+    <div class="drop-zone" id="dropZone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
+        <p>Drag and drop MP3 or MP4 files here, or click to select files</p>
+        <input type="file" id="fileInput" style="display: none;" accept="audio/mp3,video/mp4" onchange="handleFiles(this.files)">
+    </div>
+
+    <script>
+        function loadMedia(mediaFile, mediaType) {
+            if (mediaType === 'audio') {
+                var audioPlayer = document.getElementById("audioPlayer");
+                audioPlayer.src = mediaFile;
+                audioPlayer.style.display = 'block';
+                audioPlayer.play();
+            } else if (mediaType === 'video') {
+                var videoPlayer = document.getElementById("videoPlayer");
+                videoPlayer.src = mediaFile;
+                videoPlayer.style.display = 'block';
+                videoPlayer.play();
+            }
+        }
+
+        function handleFiles(files) {
+            var file = files[0];
+            var fileType = file.type.split('/')[0]; // Get the file type (audio or video)
+            var mediaPlayer = fileType === 'audio' ? 'audioPlayer' : 'videoPlayer';
+            var mediaObjectURL = URL.createObjectURL(file);
+            loadMedia(mediaObjectURL, fileType);
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            var files = event.dataTransfer.files;
+            handleFiles(files);
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+        }
+
+        // Clicking on the drop zone triggers file input
+        document.getElementById("dropZone").addEventListener("click", function() {
+            document.getElementById("fileInput").click();
+        });
+    </script>
+</body>
+</html>

@@ -18,7 +18,7 @@
     #file-input {
         display: none;
     }
-    #file-name {
+    #file-info {
         margin-top: 10px;
         font-size: 16px;
     }
@@ -31,19 +31,23 @@
     <input type="file" id="file-input" onchange="handleFileUpload(this.files)">
 </div>
 
-<div id="file-name"></div>
+<div id="file-info"></div>
 
 <script>
 function handleFileUpload(files) {
     const file = files[0];
-    const fileNameDisplay = document.getElementById('file-name');
+    const fileInfoDisplay = document.getElementById('file-info');
 
     if (file) {
-        fileNameDisplay.textContent = 'File selected: ' + file.name;
+        const fileURL = URL.createObjectURL(file);
+        fileInfoDisplay.innerHTML = `
+            <p>File selected: ${file.name}</p>
+            <p>Download: <a href="${fileURL}" download="${file.name}">${file.name}</a></p>
+        `;
 
         // You can add code here to send the file to another device
     } else {
-        fileNameDisplay.textContent = '';
+        fileInfoDisplay.textContent = '';
     }
 }
 </script>

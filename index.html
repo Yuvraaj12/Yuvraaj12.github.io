@@ -15,3 +15,26 @@
     <!-- Your content here -->
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player</title>
+    <style>
+        video {
+            width: 100%; /* Make the video player responsive */
+        }
+    </style>
+</head>
+<body>
+    <video controls>
+        <source src="your-video.mp4" type="video/mp4">
+        <!-- Provide multiple source elements to support different video formats -->
+        <!-- Example: <source src="your-video.webm" type="video/webm"> -->
+        <!-- Example: <source src="your-video.ogg" type="video/ogg"> -->
+        Your browser does not support the video tag.
+    </video>
+</body>
+</html>

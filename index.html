@@ -5,13 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Player with File Selection</title>
     <style>
-        body {
-            /* Keep the background image */
-            background-image: url('https://i.ibb.co/ZKvDr6w/abstract-blue-gradient-lines-3d-9o.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-
         /* Style for the drop zone */
         #drop-zone {
             width: 100%;
@@ -55,4 +48,51 @@
 </head>
 <body>
     <h1 id="title">Video Player By Yuvraaj</h1>
- 
+    <video controls id="video-player"></video>
+    <div id="drop-zone">
+        <p>Drag and drop your MP3 or MP4 files here or click to select files</p>
+        <input type="file" id="file-input" accept="audio/mp3,video/mp4" style="display: none;">
+        <button id="replace-button">Replace</button>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const videoPlayer = document.getElementById('video-player');
+        const fileInput = document.getElementById('file-input');
+        const replaceButton = document.getElementById('replace-button');
+
+        // Handle file selection from file input
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // Handle click on drop zone to trigger file input
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Handle replace button click
+        replaceButton.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        function handleFileSelect(event) {
+            event.preventDefault();
+
+            const file = event.target.files[0];
+
+            // Check if a file is selected
+            if (file) {
+                // Check if the file is an MP3 or MP4 file
+                if (file.type.startsWith('audio/mp3')) {
+                    // Handle MP3 file
+                    alert('MP3 file selected: ' + file.name);
+                } else if (file.type.startsWith('video/mp4')) {
+                    // Handle MP4 file
+                    videoPlayer.src = URL.createObjectURL(file);
+                } else {
+                    alert('Unsupported file format. Please select an MP3 or MP4 file.');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

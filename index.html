@@ -6,8 +6,10 @@
     <title>Video Player with File Selection</title>
     <style>
         body {
-            background-color: #add8e6; /* Light blue background color */
-            /* You can adjust the shade of light blue by specifying a different value */
+            /* Keep the background image */
+            background-image: url('https://i.ibb.co/ZKvDr6w/abstract-blue-gradient-lines-3d-9o.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
         }
 
         /* Style for the drop zone */
@@ -56,7 +58,7 @@
     <video controls id="video-player"></video>
     <div id="drop-zone">
         <p>Drag and drop your MP3 or MP4 files here or click to select files</p>
-        <input type="file" id="file-input" accept="audio/mp3,video/mp4" style="display: none;">
+        <input type="file" id="file-input" accept=".mp3,.mp4" style="display: none;">
         <button id="replace-button">Replace</button>
     </div>
 
@@ -86,12 +88,8 @@
 
             // Check if a file is selected
             if (file) {
-                // Check if the file is an MP3 or MP4 file
-                if (file.type.startsWith('audio/mp3')) {
-                    // Handle MP3 file
-                    alert('MP3 file selected: ' + file.name);
-                } else if (file.type.startsWith('video/mp4')) {
-                    // Handle MP4 file
+                // Handle MP3 or MP4 file
+                if (file.type.startsWith('audio/') || file.type.startsWith('video/')) {
                     videoPlayer.src = URL.createObjectURL(file);
                 } else {
                     alert('Unsupported file format. Please select an MP3 or MP4 file.');

@@ -34,7 +34,48 @@
             margin-bottom: 20px; /* Add some space between the title and drop zone */
             color: black; /* Change title text color to black */
         }
+    </style>
+</head>
+<body>
+    <h1 id="title">Video Player By Yuvraaj</h1>
+    <video controls id="video-player"></video>
+    <div id="drop-zone">
+        <p>Drag and drop your MP3 or MP4 files here or click to select files</p>
+        <input type="file" id="file-input" accept="audio/mp3,video/mp4" style="display: none;">
+    </div>
 
-        #replace-button {
-            display: none; /* Hide the replace button initially */
-            margin-top: 10px; /* Add some space between the dro
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const videoPlayer = document.getElementById('video-player');
+        const fileInput = document.getElementById('file-input');
+
+        // Handle file selection from file input
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // Handle click on drop zone to trigger file input
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        function handleFileSelect(event) {
+            event.preventDefault();
+
+            const file = event.target.files[0];
+
+            // Check if a file is selected
+            if (file) {
+                // Check if the file is an MP3 or MP4 file
+                if (file.type.startsWith('audio/mp3')) {
+                    // Handle MP3 file
+                    alert('MP3 file selected: ' + file.name);
+                } else if (file.type.startsWith('video/mp4')) {
+                    // Handle MP4 file
+                    videoPlayer.src = URL.createObjectURL(file);
+                } else {
+                    alert('Unsupported file format. Please select an MP3 or MP4 file.');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

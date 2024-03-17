@@ -69,14 +69,14 @@
         fileInput.addEventListener('change', handleFileSelect);
 
         // Handle click on drop zone to trigger file input
-        dropZone.addEventListener('click', () => {
-            fileInput.click();
-        });
+        dropZone.addEventListener('click', openFileInput);
 
         // Handle replace button click
-        replaceButton.addEventListener('click', () => {
+        replaceButton.addEventListener('click', openFileInput);
+
+        function openFileInput() {
             fileInput.click();
-        });
+        }
 
         function handleFileSelect(event) {
             event.preventDefault();
